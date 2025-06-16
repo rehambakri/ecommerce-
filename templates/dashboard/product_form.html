@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-2xl mx-auto mt-10 p-8 bg-white rounded-2xl shadow-sm border border-gray-100">
+  <h2 class="text-3xl font-serif font-bold text-rose-800 mb-8 text-center">{{ title }}</h2>
+
+  <form method="post" enctype="multipart/form-data" class="space-y-6">
+    {% csrf_token %}
+
+    {% for field in form %}
+      <div class="space-y-2">
+        <label class="block text-gray-700 font-medium mb-1 text-sm uppercase tracking-wider">{{ field.label_tag }}</label>
+        {{ field }}
+        {% if field.help_text %}
+          <p class="text-xs text-gray-500 mt-1">{{ field.help_text }}</p>
+        {% endif %}
+        {% if field.errors %}
+          <p class="text-rose-600 text-sm mt-1">{{ field.errors.0 }}</p>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    <div class="flex items-center justify-between mt-10 pt-6 border-t border-gray-100">
+      <button type="submit" class="bg-rose-600 text-white px-6 py-3 rounded-full hover:bg-rose-700 transition-all shadow-md hover:shadow-lg font-medium flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+        </svg>
+        Save Changes
+      </button>
+      <a href="{% url 'admin_dashboard' %}" class="text-gray-600 hover:text-rose-700 transition font-medium px-4 py-2 rounded-full hover:bg-rose-50">
+        Cancel
+      </a>
+    </div>
+  </form>
+</div>
+
+<style>
+  /* Custom form input styling */
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  input[type="password"],
+  input[type="file"],
+  textarea,
+  select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    background-color: #f9fafb;
+    transition: all 0.3s;
+    font-size: 0.95rem;
+  }
+  
+  input[type="text"]:focus,
+  input[type="number"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus,
+  input[type="file"]:focus,
+  textarea:focus,
+  select:focus {
+    outline: none;
+    border-color: #fb7185;
+    box-shadow: 0 0 0 3px rgba(251, 113, 133, 0.1);
+    background-color: white;
+  }
+  
+  textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+  
+  /* Checkbox styling */
+  input[type="checkbox"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.25rem;
+    margin-right: 0.5rem;
+    accent-color: #e11d48;
+  }
+</style>
+{% endblock %}

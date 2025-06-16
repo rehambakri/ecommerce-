@@ -1,0 +1,72 @@
+<head>
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+  <link
+    rel="stylesheet"
+    as="style"
+    onload="this.rel='stylesheet'"
+    href="https://fonts.googleapis.com/css2?display=swap&amp;family=Manrope%3Awght%40400%3B500%3B700%3B800&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
+  />
+
+
+  <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+</head>
+<nav class="bg-rose-950 sticky top-0 shadow-md z-50">
+  <div class="container mx-auto px-4">
+    <div class="flex justify-between items-center h-16">
+      <a href="/" class="text-white font-bold text-xl">SkinSite</a>
+
+      <button
+        class="md:hidden text-white focus:outline-none"
+        aria-label="Toggle menu"
+      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          ></path>
+        </svg>
+      </button>
+
+      <!-- Desktop menu -->
+      <div class="hidden md:flex space-x-8">
+        <a
+          href="{% url 'index' %}"
+          class="text-white hover:text-blue-200 transition"
+          >Home</a
+        >
+        <a
+          href="{% url 'about' %}"
+          class="text-white hover:text-blue-200 transition"
+          >About</a
+        >
+        <a
+          href="{% url 'contact' %}"
+          class="text-white hover:text-blue-200 transition"
+          >Contact</a
+        >
+        <a
+          href="{% url 'products' %}"
+          class="text-white hover:text-blue-200 transition"
+          >Products</a
+        >
+
+        <a
+          href="{% url 'admin_dashboard' %}"
+          class="text-white hover:text-blue-200 transition"
+          >Dashboard</a
+        >
+
+      </div>
+    </div>
+  </div>
+</nav>
