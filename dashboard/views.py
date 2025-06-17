@@ -39,4 +39,4 @@ def delete_product(request, product_id):
     if request.method == 'POST':
         product.delete()
         return redirect('admin_dashboard')
-    return render(request, 'dashboard/delete_confirm.html', {'product': product})
+    return render(request, 'dashboard/delete_confirm.html',{'product': product})
