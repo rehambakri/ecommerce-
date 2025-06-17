@@ -1,5 +1,4 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 <html>
   <head>
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
@@ -14,38 +13,41 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   </head>
   <body>
-    <div class="flex min-h-screen flex-col bg-white justify-between" style='font-family: Manrope, "Noto Sans", sans-serif;'>
-
+    <div
+      class="flex min-h-screen flex-col bg-white justify-between"
+      style="font-family: Manrope, 'Noto Sans', sans-serif"
+    >
       <div class="flex-1 flex items-center justify-center shadow-xl p-4">
-        <div class="w-full max-w-md mx-auto"> <!-- Centered container with max width -->
-          <div class="bg-white rounded-xl shadow-lg overflow-hidden"> <!-- Added shadow-lg -->
-            
-            
+        <div class="w-full max-w-md mx-auto">
+          <!-- Centered container with max width -->
+          <div class="bg-white rounded-xl shadow-lg overflow-hidden">
             <!-- Product Image -->
             <div
-              class="bg-center bg-no-repeat aspect-video bg-cover"
-              style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBbbRq4PVnHcCLWz887NQREDHItmqNQFsymzb5nAWqmuuhScD-vBUNA82V4Vs-ZuHJ0_geRtpqVY7Fp3L3s8HOL9mB0TJ7pVwFHtdxn1NsORba0-ntKDu72ADDRSw9BXpTo_FAYOcAmv0y3JMdZiJJvPemBrkjm3hWKOEF6oODHLs35Afj_wWzSEilS19pnqUcINTh7bgXwDpKcisXRLNztvcV4CEcxzWX7Dwutt06-KmbY8fJ51_9Dqn05iRbeglhFUmr5UKnecDI");'
+              class="bg-center bg-no-repeat aspect-video bg-contain"
+              style="background-image: url('{{ product.image.url }}'); "
             ></div>
-            
+
             <!-- Product Info -->
             <div class="p-4">
               <div class="mb-3">
                 <p class="text-[#141414] text-lg font-bold">{{product.name}}</p>
-                <p class="text-[#757575] mt-1">{{product.content}} </p>
-                <p class="text-[#141414] font-medium mt-2">${{product.price}}</p>
-              </div>
-              
-              <!-- Product Description -->
-              <div class="border-t border-gray-100 pt-3">
-                <p class="text-[#141414]">
-                  {{product.description}}
+                <p class="text-[#757575] mt-1">{{product.content}}</p>
+                <p class="text-[#141414] font-medium mt-2">
+                  ${{product.price}}
                 </p>
               </div>
+
+              <!-- Product Description -->
+              <div class="border-t border-gray-100 pt-3">
+                <p class="text-[#141414]">{{product.description}}</p>
+              </div>
             </div>
-            
+
             <!-- Add to Cart Button -->
             <div class="p-4">
-              <button class="w-full bg-[#141414] text-white py-3 rounded-lg font-medium hover:bg-opacity-90 transition">
+              <button
+                class="w-full bg-[#141414] text-white py-3 rounded-lg font-medium hover:bg-opacity-90 transition"
+              >
                 Add to Cart
               </button>
             </div>

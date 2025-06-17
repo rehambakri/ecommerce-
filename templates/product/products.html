@@ -22,37 +22,40 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
             {% for product in products %}
             <a href="{% url 'product' product.id %}">
-
-            <div
-              class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col"
-            >
-              <!-- Product Image -->
               <div
-                class="bg-center bg-no-repeat aspect-video bg-cover"
-                style="
-                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBbbRq4PVnHcCLWz887NQREDHItmqNQFsymzb5nAWqmuuhScD-vBUNA82V4Vs-ZuHJ0_geRtpqVY7Fp3L3s8HOL9mB0TJ7pVwFHtdxn1NsORba0-ntKDu72ADDRSw9BXpTo_FAYOcAmv0y3JMdZiJJvPemBrkjm3hWKOEF6oODHLs35Afj_wWzSEilS19pnqUcINTh7bgXwDpKcisXRLNztvcV4CEcxzWX7Dwutt06-KmbY8fJ51_9Dqn05iRbeglhFUmr5UKnecDI');
-                "
-              ></div>
+                class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col"
+              >
+                <!-- Product Image -->
+                <div
+                  class="bg-center bg-no-repeat aspect-video bg-contain"
+                  style="background-image: url('{{ product.image.url }}'); "
+                ></div>
 
-              <!-- Product Info -->
-              <div class="p-4 flex-grow">
-                <p class="text-[#141414] text-lg font-bold">{{ product.name }}</p>
-                <p class="text-[#757575] mt-1">{{ product.content }}</p>
-                <p class="text-[#141414] font-medium mt-2">${{ product.price }}</p>
-                <div class="border-t border-gray-100 pt-3 mt-3">
-                  <p class="text-[#141414] text-sm">{{ product.description }}</p>
+                <!-- Product Info -->
+                <div class="p-4 flex-grow">
+                  <p class="text-[#141414] text-lg font-bold">
+                    {{ product.name }}
+                  </p>
+                  <p class="text-[#757575] mt-1">{{ product.content }}</p>
+                  <p class="text-[#141414] font-medium mt-2">
+                    ${{ product.price }}
+                  </p>
+                  <div class="border-t border-gray-100 pt-3 mt-3">
+                    <p class="text-[#141414] text-sm">
+                      {{ product.description|truncatewords:10 }}
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Add to Cart Button -->
+                <div class="p-4">
+                  <button
+                    class="w-full bg-[#141414] text-white py-3 rounded-lg font-medium hover:bg-opacity-90 transition"
+                  >
+                    Add to Cart
+                  </button>
                 </div>
               </div>
-
-              <!-- Add to Cart Button -->
-              <div class="p-4">
-                <button
-                  class="w-full bg-[#141414] text-white py-3 rounded-lg font-medium hover:bg-opacity-90 transition"
-                >
-                  Add to Cart
-                </button>
-              </div>
-            </div>
             </a>
             {% endfor %}
           </div>
