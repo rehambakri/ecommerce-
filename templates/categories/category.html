@@ -1,146 +1,171 @@
-{% extends 'base.html' %}  <!-- Extend your base template if applicable -->
+{% extends 'base.html' %}
 {% block content %}
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <h1 class="text-2xl font-bold text-rose-800 mb-6">{{ category.name }}</h1>
-    
-    <!-- Product Table -->
-    <div class="overflow-x-auto shadow-md rounded-lg">
-      <table class="min-w-full divide-y divide-gray-100">
-        <thead class="bg-gradient-to-r from-rose-50 to-pink-50">
-          <tr>
-            <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-rose-800 uppercase tracking-wider">
-              Image
-            </th>
-            <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-rose-800 uppercase tracking-wider">
-              Product
-            </th>
-            <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-rose-800 uppercase tracking-wider">
-              Categories
-            </th>
-            <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-rose-800 uppercase tracking-wider">
-              Price
-            </th>
-          </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-100">
-          {% for product in page_obj %}
-            <tr class="hover:bg-rose-50/50 transition-colors duration-150">
-              <!-- Product Image -->
-              <td class="px-6 py-4 whitespace-nowrap">
-                <div class="flex-shrink-0 h-14 w-14 rounded-lg overflow-hidden border border-gray-200 bg-white shadow-inner">
-                  {% if product.image %}
-                    <img class="h-full w-full object-cover" src="{{ product.image.url }}" alt="{{ product.name }}">
-                  {% else %}
-                    <div class="h-full w-full flex items-center justify-center bg-gray-50 text-gray-400">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                      </svg>
-                    </div>
-                  {% endif %}
-                </div>
-              </td>
-              <!-- Product Name -->
-              <td class="px-6 py-4 whitespace-nowrap">
-                <a href="{% url 'product' product.id %}" class="text-rose-700 font-medium hover:text-rose-900">
-                  {{ product.name }}
-                </a>
-              </td>
-              <!-- Categories -->
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                {% for category in product.category.all %}
-                  {{ category.name }}{% if not forloop.last %}, {% endif %}
-                {% empty %}
-                  No categories
-                {% endfor %}
-              </td>
-              <!-- Price -->
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                ${{ product.price }}
-              </td>
-            </tr>
-          {% empty %}
-            <tr>
-              <td colspan="4" class="px-6 py-4 text-center text-gray-500">
-                No products found in this category.
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Header -->
+  <h1 class="text-2xl font-bold text-rose-800 mb-6">{{ category.name }}</h1>
+
+  <!-- Sort and Per Page Controls -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+    <!-- Sort By Dropdown -->
+    <div>
+      <label for="sort" class="text-sm font-medium text-gray-700 mr-2">Sort by:</label>
+      <select id="sort" onchange="window.location.href=this.value" class="form-select px-3 py-2 border border-gray-300 rounded-md focus:ring-rose-500 focus:border-rose-500">
+        <option value="{% url 'category' category.id %}?sort=name{% if current_per_page %}&per_page={{ current_per_page }}{% endif %}" {% if current_sort == 'name' %}selected{% endif %}>Name (A-Z)</option>
+        <option value="{% url 'category' category.id %}?sort=-name{% if current_per_page %}&per_page={{ current_per_page }}{% endif %}" {% if current_sort == '-name' %}selected{% endif %}>Name (Z-A)</option>
+        <option value="{% url 'category' category.id %}?sort=price{% if current_per_page %}&per_page={{ current_per_page }}{% endif %}" {% if current_sort == 'price' %}selected{% endif %}>Price (Low to High)</option>
+        <option value="{% url 'category' category.id %}?sort=-price{% if current_per_page %}&per_page={{ current_per_page }}{% endif %}" {% if current_sort == '-price' %}selected{% endif %}>Price (High to Low)</option>
+      </select>
     </div>
-
-    <!-- Pagination Controls -->
-    {% if page_obj.paginator.num_pages > 1 %}
-      <div class="mt-6 flex justify-center">
-        <nav class="inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-          <!-- First Page -->
-          {% if page_obj.number > 1 %}
-            <a href="?page=1" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-rose-800 hover:bg-rose-50">
-              <span class="sr-only">First</span>
-              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                <path fill-rule="evenodd" d="M8.707 5.293a1 1 0 010 1.414L5.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
-              </svg>
-            </a>
-          {% endif %}
-
-          <!-- Previous Page -->
-          {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}" class="relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-rose-800 hover:bg-rose-50">
-              <span class="sr-only">Previous</span>
-              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
-              </svg>
-            </a>
-          {% else %}
-            <span class="relative inline-flex items-center px-2 py-2 border border-gray-300 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">
-              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
-              </svg>
-            </span>
-          {% endif %}
-
-          <!-- Page Numbers -->
-          {% for num in page_obj.paginator.page_range %}
-            {% if page_obj.number == num %}
-              <span class="relative inline-flex items-center px-4 py-2 border border-rose-300 bg-rose-100 text-sm font-medium text-rose-800">
-                {{ num }}
-              </span>
-            {% elif num > page_obj.number|add:-3 and num < page_obj.number|add:3 %}
-              <a href="?page={{ num }}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-rose-800 hover:bg-rose-50">
-                {{ num }}
-              </a>
-            {% endif %}
-          {% endfor %}
-
-          <!-- Next Page -->
-          {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}" class="relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-rose-800 hover:bg-rose-50">
-              <span class="sr-only">Next</span>
-              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10l-3.293-3.293a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-              </svg>
-            </a>
-          {% else %}
-            <span class="relative inline-flex items-center px-2 py-2 border border-gray-300 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">
-              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10l-3.293-3.293a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-              </svg>
-            </span>
-          {% endif %}
-
-          <!-- Last Page -->
-          {% if page_obj.number < page_obj.paginator.num_pages %}
-            <a href="?page={{ page_obj.paginator.num_pages }}" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-rose-800 hover:bg-rose-50">
-              <span class="sr-only">Last</span>
-              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10l-3.293-3.293a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                <path fill-rule="evenodd" d="M11.293 14.707a1 1 0 010-1.414L14.586 10l-3.293-3.293a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-              </svg>
-            </a>
-          {% endif %}
-        </nav>
-      </div>
-    {% endif %}
+    <!-- Items Per Page Dropdown -->
+    <div>
+      <label for="per_page" class="text-sm font-medium text-gray-700 mr-2">Items per page:</label>
+      <select id="per_page" onchange="window.location.href=this.value" class="form-select px-3 py-2 border border-gray-300 rounded-md focus:ring-rose-500 focus:border-rose-500">
+        <option value="{% url 'category' category.id %}?per_page=2{% if current_sort %}&sort={{ current_sort }}{% endif %}" {% if current_per_page == 2 %}selected{% endif %}>2</option>
+        <option value="{% url 'category' category.id %}?per_page=2{% if current_sort %}&sort={{ current_sort }}{% endif %}" {% if current_per_page == 2 %}selected{% endif %}>2</option>
+        <option value="{% url 'category' category.id %}?per_page=3{% if current_sort %}&sort={{ current_sort }}{% endif %}" {% if current_per_page == 3 %}selected{% endif %}>3</option>
+        <option value="{% url 'category' category.id %}?per_page=4{% if current_sort %}&sort={{ current_sort }}{% endif %}" {% if current_per_page == 4 %}selected{% endif %}>4</option>
+      </select>
+    </div>
   </div>
+
+  <!-- Product Table -->
+  <div class="overflow-x-auto shadow-md rounded-lg">
+    <table class="min-w-full divide-y divide-gray-100">
+      <thead class="bg-gradient-to-r from-rose-50 to-pink-50">
+        <tr>
+          <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-rose-800 uppercase tracking-wider">
+            Image
+          </th>
+          <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-rose-800 uppercase tracking-wider">
+            Product
+          </th>
+          <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-rose-800 uppercase tracking-wider">
+            Categories
+          </th>
+          <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-rose-800 uppercase tracking-wider">
+            Price
+          </th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-100">
+        {% for product in page_obj %}
+          <tr class="hover:bg-rose-50/50 transition-colors duration-150">
+            <!-- Product Image -->
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex-shrink-0 h-14 w-14 rounded-lg overflow-hidden border border-gray-200 bg-white shadow-inner">
+                {% if product.image %}
+                  <img class="h-full w-full object-cover" src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% else %}
+                  <div class="h-full w-full flex items-center justify-center bg-gray-50 text-gray-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                  </div>
+                {% endif %}
+              </div>
+            </td>
+            <!-- Product Name -->
+            <td class="px-6 py-4 whitespace-nowrap">
+              <a href="{% url 'product' product.id %}" class="text-rose-700 font-medium hover:text-rose-900">
+                {{ product.name }}
+              </a>
+            </td>
+            <!-- Categories -->
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+              {% for category in product.category.all %}
+                {{ category.name }}{% if not forloop.last %}, {% endif %}
+              {% empty %}
+                No categories
+              {% endfor %}
+            </td>
+            <!-- Price -->
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+              ${{ product.price }}
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+              No products found in this category.
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination Controls -->
+  {% if page_obj.paginator.num_pages > 1 %}
+    <div class="mt-6 flex justify-center">
+      <nav class="inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+        <!-- First Page -->
+        {% if page_obj.number > 1 %}
+          <a href="{% url 'category' category.id %}?page=1{% if current_sort %}&sort={{ current_sort }}{% endif %}{% if current_per_page %}&per_page={{ current_per_page }}{% endif %}" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-rose-800 hover:bg-rose-50">
+            <span class="sr-only">First</span>
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              <path fill-rule="evenodd" d="M8.707 5.293a1 1 0 010 1.414L5.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+          </a>
+        {% endif %}
+
+        <!-- Previous Page -->
+        {% if page_obj.has_previous %}
+          <a href="{% url 'category' category.id %}?page={{ page_obj.previous_page_number }}{% if current_sort %}&sort={{ current_sort }}{% endif %}{% if current_per_page %}&per_page={{ current_per_page }}{% endif %}" class="relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-rose-800 hover:bg-rose-50">
+            <span class="sr-only">Previous</span>
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+          </a>
+        {% else %}
+          <span class="relative inline-flex items-center px-2 py-2 border border-gray-300 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+          </span>
+        {% endif %}
+
+        <!-- Page Numbers -->
+        {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+            <span class="relative inline-flex items-center px-4 py-2 border border-rose-300 bg-rose-100 text-sm font-medium text-rose-800">
+              {{ num }}
+            </span>
+          {% elif num > page_obj.number|add:-3 and num < page_obj.number|add:3 %}
+            <a href="{% url 'category' category.id %}?page={{ num }}{% if current_sort %}&sort={{ current_sort }}{% endif %}{% if current_per_page %}&per_page={{ current_per_page }}{% endif %}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-rose-800 hover:bg-rose-50">
+              {{ num }}
+            </a>
+          {% endif %}
+        {% endfor %}
+
+        <!-- Next Page -->
+        {% if page_obj.has_next %}
+          <a href="{% url 'category' category.id %}?page={{ page_obj.next_page_number }}{% if current_sort %}&sort={{ current_sort }}{% endif %}{% if current_per_page %}&per_page={{ current_per_page }}{% endif %}" class="relative inline-flex items-center px-2 py-2 border border-gray-300 bg-white text-sm font-medium text-rose-800 hover:bg-rose-50">
+            <span class="sr-only">Next</span>
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10l-3.293-3.293a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+            </svg>
+          </a>
+        {% else %}
+          <span class="relative inline-flex items-center px-2 py-2 border border-gray-300 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10l-3.293-3.293a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+            </svg>
+          </span>
+        {% endif %}
+
+        <!-- Last Page -->
+        {% if page_obj.number < page_obj.paginator.num_pages %}
+          <a href="{% url 'category' category.id %}?page={{ page_obj.paginator.num_pages }}{% if current_sort %}&sort={{ current_sort }}{% endif %}{% if current_per_page %}&per_page={{ current_per_page }}{% endif %}" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-rose-800 hover:bg-rose-50">
+            <span class="sr-only">Last</span>
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10l-3.293-3.293a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+              <path fill-rule="evenodd" d="M11.293 14.707a1 1 0 010-1.414L14.586 10l-3.293-3.293a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+            </svg>
+          </a>
+        {% endif %}
+      </nav>
+    </div>
+  {% endif %}
+</div>
 {% endblock %}

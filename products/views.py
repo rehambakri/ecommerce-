@@ -27,18 +27,31 @@ def categories(request):
         })
 
 
-def selectedCategory(request,category_id):
+
+def selectedCategory(request, category_id):
     category = get_object_or_404(Category, id=category_id)
-    products = category.product.all()
-    paginator = Paginator(products,3 )  
-    page_number = request.GET.get('page')  
-    page_obj = paginator.get_page(page_number)  
+    sort = request.GET.get('sort', 'name')
+    valid_sort_fields = ['name', '-name', 'price', '-price']
+    if sort not in valid_sort_fields:
+        sort = 'name'
+
+    products = category.product.all().order_by(sort)
+    per_page = request.GET.get('per_page', '2')
+   
+    paginator = Paginator(products, per_page)
+    page_number = request.GET.get('page', '1')
+    try:
+        page_number = int(page_number)
+    except ValueError:
+        page_number = 1
+    page_obj = paginator.get_page(page_number)
+
     return render(request, 'categories/category.html', {
         'category': category,
         'page_obj': page_obj,
-        'products': products
+        'current_sort': sort,
+        'current_per_page': per_page
     })
-
 
 
 @staff_member_required
