@@ -19,15 +19,12 @@
     >
       <div class="flex-1 flex items-center justify-center shadow-xl p-4">
         <div class="w-full max-w-md mx-auto">
-          <!-- Centered container with max width -->
           <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-            <!-- Product Image -->
             <div
               class="bg-center bg-no-repeat aspect-video bg-contain"
               style="background-image: url('{{ product.image.url }}'); "
             ></div>
 
-            <!-- Product Info -->
             <div class="p-4">
               <div class="mb-3">
                 <p class="text-[#141414] text-lg font-bold">{{product.name}}</p>
@@ -37,13 +34,17 @@
                 </p>
               </div>
 
-              <!-- Product Description -->
               <div class="border-t border-gray-100 pt-3">
                 <p class="text-[#141414]">{{product.description}}</p>
               </div>
+              <div class="border-t border-gray-100 pt-3 mt-3 ">
+                {% for category in product.category.all %}
+                <p class="text-[#141414] text-sm">{{ category.name }}</p>
+                {%endfor%}
+              </div>
             </div>
 
-            <!-- Add to Cart Button -->
+
             <div class="p-4">
               <button
                 class="w-full bg-[#141414] text-white py-3 rounded-lg font-medium hover:bg-opacity-90 transition"

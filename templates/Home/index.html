@@ -61,7 +61,9 @@
                 <p class="text-[#141414] text-lg font-bold">
                   {{ product.name }}
                 </p>
-                <p class="text-[#757575] mt-1">{{ product.description|truncatewords:5 }}</p>
+                <p class="text-[#757575] mt-1">
+                  {{ product.description|truncatewords:5 }}
+                </p>
                 <p class="text-[#141414] font-medium mt-2">
                   ${{ product.price }}
                 </p>
@@ -69,6 +71,11 @@
                   <p class="text-[#141414] text-sm">
                     {{ product.description|truncatewords:10 }}
                   </p>
+                </div>
+                <div class="border-t border-gray-100 pt-3 mt-3 ">
+                  {% for category in product.category.all %}
+                  <p class="text-[#141414] text-sm">{{ category.name }}</p>
+                  {%endfor%}
                 </div>
               </div>
 
