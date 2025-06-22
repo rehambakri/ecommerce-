@@ -1,8 +1,11 @@
-{%extends 'base.html'%}{%block content%}  
-        <h2>You logged out </h2>
-        <div class="border-top pt-3">
-            <small class="text-muted">
-                 <a class="ml-2" href="{% url 'login'%}">LogIn angain</a>
-            </small>
-        </div>
-{% endblock content %}
+<a href="{% url 'logout' %}" 
+   class="flex items-center gap-2 text-white hover:text-blue-200 transition group"
+   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+   
+   <i class="ri-logout-box-r-line"></i>
+   <span class="hidden md:inline">Logout</span>
+</a>
+
+<form id="logout-form" action="{% url 'logout' %}" method="POST" class="hidden">
+    {% csrf_token %}
+</form>

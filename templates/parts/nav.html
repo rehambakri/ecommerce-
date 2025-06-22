@@ -11,24 +11,24 @@
 
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <style>
-  /* Smooth hover transitions */
-  a {
-    transition: all 0.3s ease;
-  }
-  
-  /* Button hover effect */
-  a:hover {
-    transform: translateY(-2px);
-  }
-  
-  /* Icon background animation */
-  div[class*="bg-"] i {
-    transition: transform 0.3s ease;
-  }
-  div[class*="bg-"]:hover i {
-    transform: scale(1.1);
-  }
-</style>
+    /* Smooth hover transitions */
+    a {
+      transition: all 0.3s ease;
+    }
+
+    /* Button hover effect */
+    a:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Icon background animation */
+    div[class*="bg-"] i {
+      transition: transform 0.3s ease;
+    }
+    div[class*="bg-"]:hover i {
+      transform: scale(1.1);
+    }
+  </style>
 </head>
 <nav class="bg-rose-950 sticky top-0 shadow-md z-50">
   <div class="container mx-auto px-4">
@@ -71,6 +71,12 @@
           class="text-white hover:text-blue-200 transition"
           >Contact</a
         >
+        <a
+          href="{% url 'login' %}"
+          class="text-white hover:text-blue-200 transition"
+        >
+          Log In
+        </a>
         {% if user.is_authenticated %} {% if user.is_staff %}
         <a
           href="{% url 'admin_dashboard' %}"
@@ -92,6 +98,20 @@
           class="text-white hover:text-blue-200 transition"
         >
           Categories
+        </a>
+        <a href="{% url 'profile' %}" class="flex items-center gap-2 text-white hover:text-blue-200 transition group">
+          <img
+            src="{{ user.profile.image.url }}"
+            alt="Profile"
+            class="w-6 h-6 rounded-full object-cover border-2 border-white transition"
+          />
+          profile
+        </a>
+        <a
+          href="{% url 'logout' %}"
+          class="text-white hover:text-blue-200 transition"
+        >
+          LogOut
         </a>
         {% endif %}
       </div>
