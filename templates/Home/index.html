@@ -1,14 +1,5 @@
-{% extends 'base.html' %} {% block content %} 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
-    <!-- Include Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body>
+{% extends 'base.html' %}
+{% block content %}
 <div>
   {% if messages %}
     {% for message in messages %}
@@ -17,93 +8,75 @@
           <strong class="font-bold">Success!</strong>
           <span class="block sm:inline">{{ message }}</span>
         </div>
+      {% elif 'error' in message.tags %}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded" role="alert">
+          <strong class="font-bold">Error!</strong>
+          <span class="block sm:inline">{{ message }}</span>
+        </div>
       {% else %}
-        {% if 'error' in message.tags %}
-          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded" role="alert">
-            <strong class="font-bold">Error!</strong>
-            <span class="block sm:inline">{{ message }}</span>
-          </div>
-        {% else %}
-          <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded" role="alert">
-            <strong class="font-bold">Info:</strong>
-            <span class="block sm:inline">{{ message }}</span>
-          </div>
-        {% endif %}
+        <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded" role="alert">
+          <strong class="font-bold">Info:</strong>
+          <span class="block sm:inline">{{ message }}</span>
+        </div>
       {% endif %}
     {% endfor %}
   {% endif %}
 </div>
 
-
-    <!-- Hero Section -->
-    <section class="py-24 bg-gray-50">
-      <div class="container mx-auto px-4">
-        <div class="flex flex-col lg:flex-row items-center gap-12">
-          <div class="lg:w-1/2">
-            <h1 class="text-4xl md:text-5xl font-bold mb-6 text-gray-800">
-              Welcome to our ONLINE-SHOP
-            </h1>
-            <p class="text-xl text-gray-600 mb-8">
-              All you need in one place. Get started today and experience the
-              difference.
-            </p>
-          </div>
-          <div class="lg:w-1/2">
-            <img
-              src="https://cdn.fstoppers.com/styles/large-16-9/s3/lead/2022/07/essential-props-fstoppers-helenarosephotography-080-edit1.jpg"
-              alt="Hero Image"
-              class="w-full rounded-lg shadow-xl"
-            />
-          </div>
-        </div>
+<section class="py-24 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <div class="flex flex-col lg:flex-row items-center gap-12">
+      <div class="lg:w-1/2">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6 text-gray-800">
+          Welcome to our SKINSITE-SHOP
+        </h1>
+        <p class="text-xl text-gray-600 mb-8">
+          All you need in one place. Get started today and experience the difference.
+        </p>
       </div>
-    </section>
+      <div class="lg:w-1/2">
+        <img
+          src="https://cdn.fstoppers.com/styles/large-16-9/s3/lead/2022/07/essential-props-fstoppers-helenarosephotography-080-edit1.jpg"
+          alt="Hero Image"
+          class="w-full rounded-lg shadow-xl"
+        />
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Features Section -->
-    <section class="py-24 bg-gray-100">
-      <div class="container mx-auto px-4">
-        <div class="text-center max-w-2xl mx-auto mb-16">
-          <h2 class="text-3xl font-bold text-gray-800 mb-4">
-            Our Amazing Products
-          </h2>
-          <p class="text-xl text-gray-500">Discover what makes us different</p>
-        </div>
+<!-- Features Section -->
+<section class="py-24 bg-gray-100">
+  <div class="container mx-auto px-4">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <h2 class="text-3xl font-bold text-gray-800 mb-4">Our Amazing Products</h2>
+      <p class="text-xl text-gray-500">Discover what makes us different</p>
+    </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {% for product in top_products %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {% for product in top_products %}
+        {% if user.is_authenticated %}
           <a href="{% url 'product' product.id %}">
-            <div
-              class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col"
-            >
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col">
               <!-- Product Image -->
               <div
                 class="bg-center bg-no-repeat aspect-video bg-cover"
                 style="background-image: url('{{ product.image.url }}');"
               ></div>
-
               <!-- Product Info -->
               <div class="p-4 flex-grow">
-                <p class="text-[#141414] text-lg font-bold">
-                  {{ product.name }}
-                </p>
-                <p class="text-[#757575] mt-1">
-                  {{ product.description|truncatewords:5 }}
-                </p>
-                <p class="text-[#141414] font-medium mt-2">
-                  ${{ product.price }}
-                </p>
+                <p class="text-[#141414] text-lg font-bold">{{ product.name }}</p>
+                <p class="text-[#757575] mt-1">{{ product.description|truncatewords:5 }}</p>
+                <p class="text-[#141414] font-medium mt-2">${{ product.price }}</p>
                 <div class="border-t border-gray-100 pt-3 mt-3">
-                  <p class="text-[#141414] text-sm">
-                    {{ product.description|truncatewords:10 }}
-                  </p>
+                  <p class="text-[#141414] text-sm">{{ product.description|truncatewords:10 }}</p>
                 </div>
                 <div class="border-t border-gray-100 pt-3 mt-3">
                   {% for category in product.category.all %}
-                  <p class="text-[#141414] text-sm">{{ category.name }}</p>
-                  {%endfor%}
+                    <p class="text-[#141414] text-sm">{{ category.name }}</p>
+                  {% endfor %}
                 </div>
               </div>
-
               <!-- Add to Cart Button -->
               <div class="p-4">
                 <button
@@ -114,10 +87,39 @@
               </div>
             </div>
           </a>
-          {% endfor %}
-        </div>
-      </div>
-    </section>
-    {% endblock content %}
-  </body>
-</html>
+        {% else %}
+          <a href="{% url 'login' %}?next={% url 'product' product.id %}">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col">
+              <!-- Same product card content for unauthenticated users -->
+              <div
+                class="bg-center bg-no-repeat aspect-video bg-cover"
+                style="background-image: url('{{ product.image.url }}');"
+              ></div>
+              <div class="p-4 flex-grow">
+                <p class="text-[#141414] text-lg font-bold">{{ product.name }}</p>
+                <p class="text-[#757575] mt-1">{{ product.description|truncatewords:5 }}</p>
+                <p class="text-[#141414] font-medium mt-2">${{ product.price }}</p>
+                <div class="border-t border-gray-100 pt-3 mt-3">
+                  <p class="text-[#141414] text-sm">{{ product.description|truncatewords:10 }}</p>
+                </div>
+                <div class="border-t border-gray-100 pt-3 mt-3">
+                  {% for category in product.category.all %}
+                    <p class="text-[#141414] text-sm">{{ category.name }}</p>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="p-4">
+                <button
+                  class="w-full bg-[#141414] text-white py-3 rounded-lg font-medium hover:bg-opacity-90 transition"
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock content %}

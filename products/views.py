@@ -3,18 +3,19 @@ from .models import Product , Category
 from django.core.paginator import Paginator
 from products.forms import CategoryForm
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
-
+@login_required
 def products(request):
     products = Product.objects.all()
     return render(request, 'product/products.html', {'products': products})
-
+@login_required
 def product(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     return render(request, 'product/product.html', {'product': product})
-
+@login_required
 def categories(request):
     categories = Category.objects.all()
     paginator = Paginator(categories,3 )  
@@ -26,7 +27,7 @@ def categories(request):
 
         })
 
-
+@login_required
 
 def selectedCategory(request, category_id):
     category = get_object_or_404(Category, id=category_id)

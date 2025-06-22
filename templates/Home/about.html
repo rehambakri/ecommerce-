@@ -1,86 +1,90 @@
-{% extends 'base.html' %} {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>About</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
-      rel="stylesheet"
-    />
-  </head>
+{% extends 'base.html' %}
+{% block content %}
+<div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden border border-rose-100">
+    <div class="p-8 md:p-12">
+      <h2 class="text-4xl font-bold text-rose-800 mb-6 pb-4 border-b border-rose-200">
+        About GlowEssence
+      </h2>
 
-  <body>
-    {%block head%}
-    <!-- Content Section -->
-    <div class="w-full">
-      <div class="p-8">
-        <h2
-          class="text-3xl font-bold text-rose-800 mb-6 pb-4 border-b border-gray-200"
+      <div class="mb-8">
+        <div class="flex items-center mb-4">
+          <div class="bg-green-100 p-3 rounded-full mr-4">
+            <i class="ri-leaf-fill text-green-600 text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800">Our Mission</h3>
+        </div>
+        <p class="text-gray-600 pl-16">
+          At <span class="font-semibold text-rose-700">GlowEssence</span>, we believe in clean, conscious, and
+          effective skincare. Our mission is to empower individuals to feel
+          confident in their skin by providing high-quality,
+          dermatologist-approved products made with nature's finest
+          ingredients.
+        </p>
+      </div>
+
+      <div class="mb-8">
+        <div class="flex items-center mb-4">
+          <div class="bg-pink-100 p-3 rounded-full mr-4">
+            <i class="ri-flask-fill text-pink-600 text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800">Ingredients We Trust</h3>
+        </div>
+        <p class="text-gray-600 pl-16">
+          We carefully choose ingredients like
+          <span class="font-semibold text-rose-700">hyaluronic acid</span>, 
+          <span class="font-semibold text-rose-700">vitamin C</span>, and
+          <span class="font-semibold text-rose-700">plant-based extracts</span> 
+          for their scientifically proven benefits. All our formulations are 
+          cruelty-free, paraben-free, and made for all skin types.
+        </p>
+      </div>
+
+      <!-- Sustainability Section -->
+      <div class="mb-8">
+        <div class="flex items-center mb-4">
+          <div class="bg-blue-100 p-3 rounded-full mr-4">
+            <i class="ri-earth-fill text-blue-600 text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-800">Sustainability Commitment</h3>
+        </div>
+        <p class="text-gray-600 pl-16">
+          Our packaging is recyclable, and our production methods are
+          eco-friendly. We're committed to reducing our environmental
+          footprint while delivering radiant results to your skincare routine.
+        </p>
+      </div>
+
+      <!-- Call to Action -->
+      <div class="mt-8 pt-6 border-t border-rose-200 text-center">
+        <a
+          href="/contact"
+          class="inline-flex items-center bg-rose-600 hover:bg-rose-700 text-white px-6 py-3 rounded-lg transition-colors duration-300 shadow-md hover:shadow-lg"
         >
-          About GlowEssence
-        </h2>
-
-        <!-- Brand Mission -->
-        <div class="mb-6">
-          <h5 class="font-bold text-gray-800 mb-3 flex items-center">
-            <i class="ri-leaf-fill text-green-500 mr-2"></i>
-            Our Mission
-          </h5>
-          <p class="text-gray-600 pl-6">
-            At <strong>GlowEssence</strong>, we believe in clean, conscious, and
-            effective skincare. Our mission is to empower individuals to feel
-            confident in their skin by providing high-quality,
-            dermatologist-approved products made with nature’s finest
-            ingredients.
-          </p>
-        </div>
-
-        <!-- Ingredients -->
-        <div class="mb-6">
-          <h5 class="font-bold text-gray-800 mb-3 flex items-center">
-            <i class="ri-flask-fill text-pink-500 mr-2"></i>
-            Ingredients We Trust
-          </h5>
-          <p class="text-gray-600 pl-6">
-            We carefully choose ingredients like
-            <strong>hyaluronic acid</strong>, <strong>vitamin C</strong>, and
-            <strong>plant-based extracts</strong> for their scientifically
-            proven benefits. All our formulations are cruelty-free,
-            paraben-free, and made for all skin types.
-          </p>
-        </div>
-
-        <!-- Sustainability -->
-        <div class="mb-6">
-          <h5 class="font-bold text-gray-800 mb-3 flex items-center">
-            <i class="ri-earth-fill text-blue-500 mr-2"></i>
-            Sustainability Commitment
-          </h5>
-          <p class="text-gray-600 pl-6">
-            Our packaging is recyclable, and our production methods are
-            eco-friendly. We’re committed to reducing our environmental
-            footprint while delivering radiant results to your skincare routine.
-          </p>
-        </div>
-
-        <!-- Contact Button -->
-        <div
-          class="mt-6 pt-4 border-t border-gray-200 text-center md:text-left"
-        >
-          <a
-            href="/contact"
-            class="inline-flex items-center bg-rose-800 hover:bg-rose-700 text-white px-6 py-2 rounded-md transition-colors"
-          >
-            <i class="ri-mail-fill mr-2"></i> Contact Us
-          </a>
-        </div>
+          <i class="ri-mail-fill mr-2"></i> Contact Us
+        </a>
       </div>
     </div>
-    <!-- End content -->
-    {%endblock head%}
-  </body>
-</html>
+  </div>
+</div>
+
+<style>
+  /* Smooth hover transitions */
+  a {
+    transition: all 0.3s ease;
+  }
+  
+  /* Button hover effect */
+  a:hover {
+    transform: translateY(-2px);
+  }
+  
+  /* Icon background animation */
+  div[class*="bg-"] i {
+    transition: transform 0.3s ease;
+  }
+  div[class*="bg-"]:hover i {
+    transform: scale(1.1);
+  }
+</style>
 {% endblock content %}

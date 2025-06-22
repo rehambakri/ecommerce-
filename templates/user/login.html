@@ -1,20 +1,71 @@
-{%extends 'base.html'%}{%block content%}
+{% extends 'base.html' %}
+{% block content %}
 {% load crispy_forms_tags %}
-    <div class="content-section">
-        <form method="POST">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">login</legend>
-                {{ form|crispy }}
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Log In</button>
-            </div>
-        </form>
-        <div class="border-top pt-3">
-            <small class="text-muted">
-                Already Have An Account? <a class="ml-2" href="{% url 'register'%}">Sign Up</a>
-            </small>
-        </div>
+
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
+    <div class="text-center">
+      <h2 class="mt-6 text-3xl font-extrabold text-gray-900">Log In</h2>
+      <p class="mt-2 text-sm text-gray-600">
+        Or <a href="{% url 'register' %}" class="font-medium text-rose-800 hover:text-rose-500">create an account</a>
+      </p>
     </div>
-{% endblock content %}
+
+    <form class="mt-8 space-y-6" method="POST">
+      {% csrf_token %}
+      <div class="rounded-md shadow-sm space-y-4">
+        {{ form|crispy }}
+      </div>
+
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-rose-800 focus:ring-rose-500 border-gray-300 rounded">
+          <label for="remember-me" class="ml-2 block text-sm text-gray-900">Remember me</label>
+        </div>
+
+        <div class="text-sm">
+          <a href="#" class="font-medium text-rose-800 hover:text-rose-500">Forgot password?</a>
+        </div>
+      </div>
+
+      <div>
+        <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-rose-800 hover:bg-rose-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">
+          Log In
+        </button>
+      </div>
+    </form>
+    
+    <div class="text-center text-sm text-gray-500 mt-4">
+      Need an account? <a href="{% url 'register' %}" class="font-medium text-rose-800 hover:text-rose-500">Sign Up</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #374151;
+  }
+  input[type="text"], 
+  input[type="password"], 
+  input[type="email"] {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solidrgb(255, 255, 255);
+    border-radius: 0.375rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+  .btn-outline-info {
+    background-color: transparent;
+
+  }
+  .btn-outline-info:hover {
+    color: white;
+  }
+</style>
+{% endblock %}
