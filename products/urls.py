@@ -9,5 +9,6 @@ urlpatterns=[
     path('category/create/', views.create_category, name='create_category'),
     path('category/<int:category_id>/edit/', views.edit_category, name='edit_category'),
     path('category/<int:category_id>/delete/', views.delete_category, name='delete_category'),
-
+    path('toggle-favorite/', views.toggle_favorite, name='toggle_favorite'),
+    path('favorites/', views.favorite_list, name='favorite_list'),
 ]

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Your Favorites</h1>
+{% if favorites %}
+<ul>
+    {% for favorite in favorites %}
+    <li>
+        {{ favorite.product.name }} - ${{ favorite.product.price }}
+        <form action="{% url 'products:toggle_favorite' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ favorite.product.id }}">
+            <button type="submit">Remove from Favorites</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>You have no favorite products.</p>
+{% endif %}
+<a href="{% url 'products:product_list' %}">Back to Products</a>
+{% endblock %}

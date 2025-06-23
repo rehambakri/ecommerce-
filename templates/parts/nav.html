@@ -99,6 +99,12 @@
         >
           Categories
         </a>
+         <a
+          href="{% url 'favorite_list' %}"
+          class="text-white hover:text-blue-200 transition"
+        >
+          favorite
+        </a>
         <a href="{% url 'profile' %}" class="flex items-center gap-2 text-white hover:text-blue-200 transition group">
           <img
             src="{{ user.profile.image.url }}"

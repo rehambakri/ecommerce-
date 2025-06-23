@@ -1,9 +1,10 @@
 from django.shortcuts import render , get_object_or_404,redirect
-from .models import Product , Category
+from .models import Product , Category , Favorite
 from django.core.paginator import Paginator
 from products.forms import CategoryForm
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -85,3 +86,26 @@ def delete_category(request, category_id):
         category.delete()
         return redirect('categories')
     return render(request, 'categories/delete_confirm.html', {'category': category})
+
+
+@login_required
+def toggle_favorite(request):
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        product = get_object_or_404(Product, id=product_id)
+        favorite, created = Favorite.objects.get_or_create(user=request.user, product=product)
+        if not created:
+            favorite.delete()
+            return JsonResponse({'status': 'removed'})
+        return JsonResponse({'status': 'added'})
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+@login_required
+def favorite_list(request):
+    favorites = Favorite.objects.filter(user=request.user).select_related('product')
+    return render(request, 'products/favorite_list.html', {'favorites': favorites})
+
+
+
+
+
