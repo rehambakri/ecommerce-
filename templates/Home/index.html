@@ -84,13 +84,17 @@
                 >
                   Add to Cart
                 </button>
+                <button class="favorite-btn w-full mt-2 bg-gray-200 text-gray-800 py-3 rounded-lg font-medium hover:bg-gray-300 transition"
+                        data-product-id="{{ product.id }}"
+                        data-favorited="{% if product.id in favorites %}true{% else %}false{% endif %}">
+                    {% if product.id in favorites %}❤️ Remove from Favorites{% else %}♡ Add to Favorites{% endif %}
+                </button>
               </div>
             </div>
           </a>
         {% else %}
           <a href="{% url 'login' %}?next={% url 'product' product.id %}">
             <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col">
-              <!-- Same product card content for unauthenticated users -->
               <div
                 class="bg-center bg-no-repeat aspect-video bg-cover"
                 style="background-image: url('{{ product.image.url }}');"
@@ -113,6 +117,11 @@
                   class="w-full bg-[#141414] text-white py-3 rounded-lg font-medium hover:bg-opacity-90 transition"
                 >
                   Add to Cart
+                </button>
+                <button class="favorite-btn w-full mt-2 bg-gray-200 text-gray-800 py-3 rounded-lg font-medium hover:bg-gray-300 transition"
+                        data-product-id="{{ product.id }}"
+                        data-favorited="{% if product.id in favorites %}true{% else %}false{% endif %}">
+                    {% if product.id in favorites %}❤️ Remove from Favorites{% else %}♡ Add to Favorites{% endif %}
                 </button>
               </div>
             </div>

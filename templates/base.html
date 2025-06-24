@@ -1,6 +1,21 @@
-
-{%include 'parts/nav.html'%}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="csrf-token" content="{% csrf_token %}">
+  <title>{% block title %}Product{% endblock %}</title>
+  <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Manrope:wght@400;500;700;800&family=Noto+Sans:wght@400;500;700;900">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+</head>
+<body>
+  {%include 'parts/nav.html'%}
 {% block content  %}
 
 {% endblock content  %}
 {%include 'parts/footer.html'%}
+{% load static %}
+  <script src="{% static 'js/favorite-button.js' %}"></script>
+</body>
+</html>

@@ -30,8 +30,8 @@
       <tbody class="bg-white divide-y divide-gray-100">
         {% for category in page_obj %}
         <tr class="hover:bg-rose-50/50 transition-colors duration-150">
-          <!-- Category Image -->
           <td class="px-6 py-4 whitespace-nowrap">
+            <a href="{% url 'category' category.id %}">
             <div class="flex-shrink-0 h-14 w-14 rounded-lg overflow-hidden border border-gray-200 bg-white shadow-inner">
               {% if category.image %}
               <img class="h-full w-full object-cover" src="{{ category.image.url }}" alt="{{ category.name }}">
@@ -66,6 +66,7 @@
             No categories found.
           </td>
         </tr>
+      </a>
         {% endfor %}
       </tbody>
     </table>

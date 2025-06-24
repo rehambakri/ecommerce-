@@ -1,21 +1,62 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
 {% block content %}
-<h1>Your Favorites</h1>
-{% if favorites %}
-<ul>
-    {% for favorite in favorites %}
-    <li>
-        {{ favorite.product.name }} - ${{ favorite.product.price }}
-        <form action="{% url 'products:toggle_favorite' %}" method="post" style="display:inline;">
-            {% csrf_token %}
-            <input type="hidden" name="product_id" value="{{ favorite.product.id }}">
-            <button type="submit">Remove from Favorites</button>
-        </form>
-    </li>
-    {% endfor %}
-</ul>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Header with Add Product Button -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+    <h2 class="text-3xl font-serif font-bold text-rose-800 tracking-tight">Favorite list</h2>
+  </div>{% if favorites %}
+<div class="overflow-hidden bg-white rounded-2xl shadow-sm border border-gray-100">
+    <table class="min-w-full divide-y divide-gray-100">
+      <thead class="bg-gradient-to-r from-rose-50 to-pink-50">
+        <tr>
+          <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-rose-800 uppercase tracking-wider">Image</th>
+          <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-rose-800 uppercase tracking-wider">Product</th>
+          <th scope="col" class="px-6 py-4 text-left text-xs font-medium text-rose-800 uppercase tracking-wider">Action</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-100">
+        {% for favorite in favorites %}
+        <tr class="hover:bg-rose-50/50 transition-colors duration-150">
+          <!-- Product Image -->
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="flex-shrink-0 h-14 w-14 rounded-lg overflow-hidden border border-gray-200 bg-white shadow-inner">
+              {% if favorite.product.image %}
+                <img class="h-full w-full object-cover" src="{{ favorite.product.image.url }}" alt="{{ favorite.product.name }}">
+              {% else %}
+                <div class="h-full w-full flex items-center justify-center bg-gray-50 text-gray-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+              {% endif %}
+            </div>
+          </td>
+          
+          <!-- Product Name -->
+          <td class="px-6 py-4">
+            <div class="text-sm font-medium text-gray-900">{{ favorite.product.name }}</div>
+          </td>
+          
+          <!-- Actions -->
+          <td class="px-6 py-4 whitespace-nowrap">
+            <form action="{% url 'toggle_favorite' %}" method="post" class="inline">
+              {% csrf_token %}
+              <input type="hidden" name="product_id" value="{{ favorite.product.id }}" />
+              <button type="submit" class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-rose-500 hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-300 transition-all">
+                Remove from Favorites
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% else %}
-<p>You have no favorite products.</p>
+<p class="text-gray-500 py-4">You have no favorite products.</p>
 {% endif %}
-<a href="{% url 'products:product_list' %}">Back to Products</a>
+<a href="{% url 'products' %}" class="inline-block mt-6 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 transition-colors">
+  ← Back to Products
+</a>
+</div>
 {% endblock %}

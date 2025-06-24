@@ -5,17 +5,35 @@ from products.forms import CategoryForm
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
 @login_required
 def products(request):
     products = Product.objects.all()
-    return render(request, 'product/products.html', {'products': products})
+    if request.user.is_authenticated:
+        favorites = Favorite.objects.filter(user=request.user).values_list('product_id', flat=True)
+    else:
+        favorites = []
+    
+    context = {
+        'products': products,
+        'favorites': favorites,
+    }
+    return render(request, 'product/products.html', context)
 @login_required
 def product(request, product_id):
-    product = get_object_or_404(Product, pk=product_id)
-    return render(request, 'product/product.html', {'product': product})
+    product = Product.objects.get(id=product_id)
+    if request.user.is_authenticated:
+        favorites = Favorite.objects.filter(user=request.user).values_list('product_id', flat=True)
+    else:
+        favorites = []
+    context = {
+        'product': product,
+        'favorites': favorites,
+    }
+    return render(request, 'product/product.html', context)
 @login_required
 def categories(request):
     categories = Category.objects.all()
@@ -88,22 +106,33 @@ def delete_category(request, category_id):
     return render(request, 'categories/delete_confirm.html', {'category': category})
 
 
+
+
+
+
+
+@csrf_exempt
 @login_required
 def toggle_favorite(request):
     if request.method == 'POST':
         product_id = request.POST.get('product_id')
-        product = get_object_or_404(Product, id=product_id)
-        favorite, created = Favorite.objects.get_or_create(user=request.user, product=product)
-        if not created:
-            favorite.delete()
-            return JsonResponse({'status': 'removed'})
-        return JsonResponse({'status': 'added'})
-    return JsonResponse({'error': 'Invalid request'}, status=400)
+        try:
+            product = Product.objects.get(id=product_id)
+            favorite, created = Favorite.objects.get_or_create(user=request.user, product=product)
+            if not created:
+                favorite.delete()
+                status = 'removed'
+            else:
+                status = 'added'
+            return JsonResponse({'status': status})
+        except Product.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Product not found'}, status=400)
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
 
 @login_required
 def favorite_list(request):
     favorites = Favorite.objects.filter(user=request.user).select_related('product')
-    return render(request, 'products/favorite_list.html', {'favorites': favorites})
+    return render(request, 'favorites/favorite_list.html', {'favorites': favorites})
 
 
 

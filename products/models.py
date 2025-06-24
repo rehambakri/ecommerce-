@@ -20,6 +20,7 @@ class Product(models.Model):
     description = models.TextField(default='null')
     category = models.ManyToManyField(Category , related_name="product")
 
+
     def __str__(self):
         return self.name 
 
@@ -31,6 +32,3 @@ class Favorite(models.Model):
 
     class Meta:
         unique_together = ('user', 'product')
-        
-    def __str__(self):
-        return f"{self.user.username} favorites {self.product.name}"
